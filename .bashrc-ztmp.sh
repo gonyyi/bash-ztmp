@@ -1,14 +1,19 @@
 #!/bin/sh
 
-# ztmp 1.0.0
+# ztmp 1.1.0
 # (c) gon y. yi (gonyyi.com/copyright.txt)
 
 # Setup
 # 1. COPY this file to ~/.bashrc-ztmp
 # 2. ADD `source ~/.bashrc-ztmp` to .bashrc or .zshrc
-ztdir="/Users/gonyi/zTmp"
+ztdir="zTmp"
 ztdir_archive="archive"
 ztdir_trash=".trash"
+
+
+# Update path of ztdir to use home directory
+ztdir="$(echo ~)/$ztdir"
+ztver="1.1.0"
 
 ztmp() {
     # echo "used <$1>"
@@ -19,8 +24,15 @@ ztmp() {
     fi 
 
 
-    if [ $1 = "help" ] || [ $1 = "-help" ]; then
-        echo "Usage: ztmp <new|go|find|help|last|ls|list|today|rm|archive> <optional>";
+    if [ $1 = "help" ]; then
+        echo "zTmp (ver $ztver) "
+        echo "     (c) 2021 Gon Y. Yi (gonyyi.com)"
+        echo "     https://github.com/gonyyi/bash-ztmp\n"
+        echo "Usage:"
+        echo "     ztmp <Command> <Optional Param>\n"
+        echo "Command:"
+        echo "     help|new|go|find|-f|last|list|-ls|today|-t|remove|-rm|archive"
+
         return 0;
     fi 
 
@@ -33,7 +45,8 @@ ztmp() {
         # replace all occurance: ${VAR//word1/word2}
         # `$*` for all arguments with space
         today=$(date +"%Y-%m%d");
-        today="$today $*"
+        # all arguments except 1: "${@:2}"
+        today="$today ${@:2}"
         new_folder_name="${today// /-}"
         mkdir -p "$ztdir/$new_folder_name"
         if [ $? -ne 0 ]; then
@@ -45,7 +58,7 @@ ztmp() {
         return 0; 
     fi
 
-    if [ $1 = "search" ] || [ $1 = "find" ] || [ $1 = "-f" ]; then 
+    if [ $1 = "find" ] || [ $1 = "-f" ]; then 
         if [ -z $2 ]; then 
             echo "Usage: ztmp <find|search|-f> <Name>"
             return 1;
@@ -110,7 +123,7 @@ ztmp() {
         return 1;
     fi
 
-    if [ $1 = "last" ] || [ $1 = "-l" ]; then 
+    if [ $1 = "last" ]; then 
         # 2*/, so archive or other folders won't be catched
         lastCreatedDir=$(ls -1dtU $ztdir/2*/ | head -1)
         echo "Go to last: $lastCreatedDir"
@@ -136,7 +149,7 @@ ztmp() {
     fi
 
 
-    if [ $1 = "rm" ] || [ $1 = "archive" ] || [ $1 = "-a" ]; then 
+    if [ $1 = "remove" ] || [ $1 = "-rm" ] || [ $1 = "archive" ] || [ $1 = "-a" ]; then 
         # get current dir; remove prefix (of ztmp dir)
         currDir=$(pwd)
         currDirShort=${${currDir}#"$ztdir"}
@@ -171,24 +184,19 @@ ztmp() {
             fi
         fi
 
-        if [ "$1" = "rm" ]; then 
+        if [ $1 = "remove" ] || [ "$1" = "-rm" ]; then 
             # Now it can be deleted
-            if [ "$#" -gt 1 ] && [ "$2" = "-y" ]; then 
-                mkdir -p "$ztdir/$ztdir_trash"
-                cd .. 
-                mv $currDir $ztdir/$ztdir_trash/
-                ret=$?
-                if [ $ret -eq 0 ]; then 
-                    echo "Successfully moved $currDirShort to trash ($ztdir_trash)"
-                    return 0 
-                else 
-                    echo "Failed, retCode=$ret"
-                    return 1 
-                fi
-            fi 
-            echo "Use -y option to delete this tmp folder"
-            echo "CurrDir: <$currDir>"
-            return 0
+            mkdir -p "$ztdir/$ztdir_trash"
+            cd .. 
+            mv $currDir $ztdir/$ztdir_trash/
+            ret=$?
+            if [ $ret -eq 0 ]; then 
+                echo "Successfully moved $currDirShort to trash ($ztdir_trash)"
+                return 0 
+            else 
+                echo "Failed, retCode=$ret"
+                return 1 
+            fi
         fi 
     fi
 }
