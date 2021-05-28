@@ -1,7 +1,7 @@
 #!/bin/sh
 
-# zTmp installer
-# (c) Gon Y Yi (gonyyi.com/copyright.txt)
+# ztmp installer 1.0.0
+# (c) gon y. yi (gonyyi.com/copyright.txt)
 
 tmpHomeDir=$(echo ~)
 echo "zTmp install\n(c)Gon Y. Yi (gonyyi.com)\n"
