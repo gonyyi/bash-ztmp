@@ -4,7 +4,7 @@
 Apache License 2.0
 
 zTmp is a bash script that helps to create and manage temporary directories for 
-daily task.
+daily task for OS X and Linux.
 
 
 ## Installation
