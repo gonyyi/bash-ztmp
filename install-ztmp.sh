@@ -31,8 +31,8 @@ else
 	return 1
 fi 
 
-if [ $(grep "source .bashrc-ztmp.sh" $tmpHomeDir/$target | wc -l |xargs) -eq 0 ]; then 
-	echo "source .bashrc-ztmp.sh" >> $tmpHomeDir/$target
+if [ $(grep "source $tmpHomeDir/.bashrc-ztmp.sh" $tmpHomeDir/$target | wc -l |xargs) -eq 0 ]; then 
+	echo "source $tmpHomeDir/.bashrc-ztmp.sh" >> $tmpHomeDir/$target
 	if [ $? -eq 0 ]; then
 		echo "[OK] successfully added to $tmpHomeDir/$target"
 	else
