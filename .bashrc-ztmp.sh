@@ -6,8 +6,8 @@
 # Setup
 # 1. COPY this file to ~/.bashrc-ztmp
 # 2. ADD `source ~/.bashrc-ztmp` to .bashrc or .zshrc
-ztdir="zTmp"
-ztdir_archive="archive"
+ztdir=".zTmp"
+ztdir_archive=".archive"
 ztdir_trash=".trash"
 
 
