@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ztmp 1.1.0
+# ztmp 1.1.1
 # (c) gon y. yi (gonyyi.com/copyright.txt)
 
 # Setup
@@ -96,7 +96,7 @@ ztmp() {
 
     if [ $1 = "go" ] || [ $1 = "cd" ]; then 
         if [ -z $2 ]; then 
-            echo "Usage: ztmp go <Name> (or ztmp cd <Name>)"
+            echo "Usage: ztmp <go|cd> <Name>"
             return 1;
         fi 
 
