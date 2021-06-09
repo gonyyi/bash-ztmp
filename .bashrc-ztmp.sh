@@ -15,6 +15,10 @@ ztdir_trash=".trash"
 ztdir="$(echo ~)/$ztdir"
 ztver="1.1.1"
 
+# Create tmp directory if not exist.
+# This will load only when terminal sesssion starts
+[ ! -d "$ztdir" ] && $(mkdir -p "$ztdir")
+
 ztmp() {
     # echo "used <$1>"
 
