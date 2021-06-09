@@ -84,9 +84,8 @@ ztmp() {
         fi 
 
         foundAny=0
-        
-        # completely silencing... somehow i couldn't easy do that)
-        ( tmp=$(ls -1dtu $ztdir/*/) > /dev/tty ) >& /dev/null
+
+        ( a=$(ls -1dtu $ztdir/*/) > /dev/tty ) >& /dev/null
         if [ $? = 0 ]; then 
             lastCreatedDir=$(ls -1dtu $ztdir/*/ | grep $2)
             howMany=$(echo $lastCreatedDir | wc -l | xargs)
@@ -98,8 +97,7 @@ ztmp() {
             fi
         fi 
 
-        # completely silencing... somehow i couldn't easy do that)
-        ( tmp=$(ls -1dtu $ztdir/$ztdir_archive/*/) > /dev/tty ) >& /dev/null
+        ( a=$(ls -1dtu $ztdir/$ztdir_archive/*/) > /dev/tty ) >& /dev/null
         if [ $? = 0 ]; then  
             lastCreatedDir=$(ls -1dtu $ztdir/$ztdir_archive/*/ | grep $2)
             howMany=$(echo $lastCreatedDir | wc -l | xargs)
@@ -176,7 +174,7 @@ ztmp() {
     if [ $1 = "remove" ] || [ $1 = "-rm" ] || [ $1 = "archive" ] || [ $1 = "-a" ]; then 
         # get current dir; remove prefix (of ztmp dir)
         currDir=$(pwd)
-        currDirShort=${"$currDir"#"$ztdir"}
+        currDirShort=${currDir#$ztdir}
         
         if [ "$currDir" = "$currDirShort" ]; then
             echo "Error: this is not a zTmp directory."
