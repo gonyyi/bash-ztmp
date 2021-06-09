@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ztmp 1.1.1
+# ztmp 1.1.3
 # (c) gon y. yi (gonyyi.com/copyright.txt)
 
 # Setup
@@ -10,6 +10,7 @@ ztdir=".zTmp"
 ztdir_archive=".archive"
 ztdir_trash=".trash"
 
+ztAnsi=true
 
 # Update path of ztdir to use home directory
 ztdir="$(echo ~)/$ztdir"
@@ -21,6 +22,17 @@ ztver="1.1.1"
 [ ! -d "$ztdir/$ztdir_archive" ] && $(mkdir -p "$ztdir/$ztdir_archive")
 [ ! -d "$ztdir/$ztdir_trash" ] && $(mkdir -p "$ztdir/$ztdir_trash")
 
+
+ansiWhite=""
+ansiNone=""
+
+if $ztAnsi; then 
+    ansiWhite="\033[1;37m"
+    ansiNone="\033[0m"
+else
+    ansiWhite=""
+    ansiNone=""
+fi
 
 ztmp() {
     # echo "used <$1>"
@@ -36,7 +48,7 @@ ztmp() {
         echo "     (c) 2021 Gon Y. Yi (gonyyi.com)"
         echo "     https://github.com/gonyyi/bash-ztmp\n"
         echo "Usage:"
-        echo "     ztmp <Command> <Optional Param>\n"
+        echo "     ${ansiWhite}ztmp <Command> <Optional Param>${ansiNone}\n"
         echo "Command:"
         echo "     help|new|go|cd|find|-f|last|list|-ls|today|-t|remove|-rm|archive"
 
@@ -70,32 +82,32 @@ ztmp() {
             echo "Usage: ztmp <find|search|-f> <Name>"
             return 1;
         fi 
-        
-        ansiWhite="\033[1;37m"
-        ansiNone="\033[0m"
+
         foundAny=0
 
+        tmp=$(ls -1dtu $ztdir/*/) >/dev/null 2>&1
+        if [ $? = 0 ]; then 
+            lastCreatedDir=$(ls -1dtu $ztdir/*/ | grep $2)
+            howMany=$(echo $lastCreatedDir | wc -l | xargs)
+            if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
+                howMany=0;
+            else
+                foundAny=1
+                echo "${ansiWhite}zTmp: (total: $howMany)${ansiNone}\n$lastCreatedDir"
+            fi
+        fi 
 
-        [ ! -d "$ztdir/*/" ] && echo "No temporary directory" && return
-
-        lastCreatedDir=$(ls -1dtu $ztdir/*/ | grep $2)
-        howMany=$(echo $lastCreatedDir | wc -l | xargs)
-        if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
-            howMany=0;
-        else
-            foundAny=1
-            echo "${ansiWhite}zTmp: (total: $howMany)${ansiNone}\n$lastCreatedDir"
-        fi
-
-        [ ! -d "$ztdir/$ztdir_archive/*/" ] && return; 
-        lastCreatedDir=$(ls -1dtu $ztdir/$ztdir_archive/*/ | grep $2)
-        howMany=$(echo $lastCreatedDir | wc -l | xargs)
-        if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
-            howMany=0;
-        else
-            foundAny=1
-            echo "${ansiWhite}Archive: (total: $howMany)${ansiNone}\n$lastCreatedDir"
-        fi
+        tmp=$(ls -1dtu $ztdir/$ztdir_archive/*/) >/dev/null 2>&1
+        if [ $? = 0 ]; then  
+            lastCreatedDir=$(ls -1dtu $ztdir/$ztdir_archive/*/ | grep $2)
+            howMany=$(echo $lastCreatedDir | wc -l | xargs)
+            if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
+                howMany=0;
+            else
+                foundAny=1
+                echo "${ansiWhite}Archive: (total: $howMany)${ansiNone}\n$lastCreatedDir"
+            fi
+        fi 
 
         if [ $foundAny -lt 1 ]; then
             echo "Did not find <$2>"
@@ -133,7 +145,7 @@ ztmp() {
         return 1;
     fi
 
-    if [ $1 = "last" ]; then 
+    if [ $1 = "last" ] || [ $1 = "-l" ]; then 
         # 2*/, so archive or other folders won't be catched
         lastCreatedDir=$(ls -1dtu $ztdir/2*/ | head -1)
         echo "Go to last: $lastCreatedDir"
