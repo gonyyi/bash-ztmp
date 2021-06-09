@@ -85,7 +85,7 @@ ztmp() {
 
         foundAny=0
 
-        tmp=$(ls -1dtu $ztdir/*/) >/dev/null 2>&1
+        ( a=$(ls -1dtu $ztdir/*/) > /dev/tty ) >& /dev/null
         if [ $? = 0 ]; then 
             lastCreatedDir=$(ls -1dtu $ztdir/*/ | grep $2)
             howMany=$(echo $lastCreatedDir | wc -l | xargs)
@@ -97,7 +97,7 @@ ztmp() {
             fi
         fi 
 
-        tmp=$(ls -1dtu $ztdir/$ztdir_archive/*/) >/dev/null 2>&1
+        ( a=$(ls -1dtu $ztdir/$ztdir_archive/*/) > /dev/tty ) >& /dev/null
         if [ $? = 0 ]; then  
             lastCreatedDir=$(ls -1dtu $ztdir/$ztdir_archive/*/ | grep $2)
             howMany=$(echo $lastCreatedDir | wc -l | xargs)
