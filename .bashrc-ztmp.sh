@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# ztmp 1.1.3
+# ztmp 1.1.2
 # (c) gon y. yi (gonyyi.com/copyright.txt)
 
 # Setup
@@ -44,20 +44,20 @@ ztmp() {
 
 
     if [ $1 = "help" ]; then
-        echo "zTmp (ver $ztver) "
-        echo "     (c) 2021 Gon Y. Yi (gonyyi.com)"
-        echo "     https://github.com/gonyyi/bash-ztmp\n"
-        echo "Usage:"
-        echo "     ${ansiWhite}ztmp <Command> <Optional Param>${ansiNone}\n"
-        echo "Command:"
-        echo "     help|new|go|cd|find|-f|last|list|-ls|today|-t|remove|-rm|archive"
+        echo -e "zTmp (ver $ztver) "
+        echo -e "     (c) 2021 Gon Y. Yi (gonyyi.com)"
+        echo -e "     https://github.com/gonyyi/bash-ztmp\n"
+        echo -e "Usage:"
+        echo -e "     ${ansiWhite}ztmp <Command> <Optional Param>${ansiNone}\n"
+        echo -e "Command:"
+        echo -e "     help|new|go|cd|find|-f|last|list|-ls|today|-t|remove|-rm|archive"
 
         return 0;
     fi 
 
     if [ $1 = "new" ]; then
         if [ -z $2 ]; then 
-            echo "Usage: ztmp new <Name>"
+            echo -e "Usage: ztmp new <Name>"
             return 1;
         fi         
         # replace single occurance: ${VAR/word1/word2}
@@ -69,10 +69,10 @@ ztmp() {
         new_folder_name="${today// /-}"
         mkdir -p "$ztdir/$new_folder_name"
         if [ $? -ne 0 ]; then
-            echo "Error: cannot created <$ztdir/$new_folder_name>"
+            echo -e "Error: cannot created <$ztdir/$new_folder_name>"
             return 1 
         fi
-        echo "Created $ztdir/$new_folder_name"
+        echo -e "Created $ztdir/$new_folder_name"
         cd $ztdir/$new_folder_name
         return 0; 
     fi
@@ -93,7 +93,7 @@ ztmp() {
                 howMany=0;
             else
                 foundAny=1
-                echo "${ansiWhite}zTmp: (total: $howMany)${ansiNone}\n$lastCreatedDir"
+                echo -e "${ansiWhite}zTmp: (total: $howMany)${ansiNone}\n$lastCreatedDir"
             fi
         fi 
 
@@ -105,7 +105,7 @@ ztmp() {
                 howMany=0;
             else
                 foundAny=1
-                echo "${ansiWhite}Archive: (total: $howMany)${ansiNone}\n$lastCreatedDir"
+                echo -e "${ansiWhite}Archive: (total: $howMany)${ansiNone}\n$lastCreatedDir"
             fi
         fi 
 
@@ -140,7 +140,7 @@ ztmp() {
             return 0;
         fi
         
-        echo "More than 1 result (total of $howMany):\n"
+        echo -e "More than 1 result (total of $howMany):\n"
         echo $lastCreatedDir
         return 1;
     fi
