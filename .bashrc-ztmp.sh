@@ -13,7 +13,7 @@ ztdir_trash=".trash"
 
 # Update path of ztdir to use home directory
 ztdir="$(echo ~)/$ztdir"
-ztver="1.1.0"
+ztver="1.1.1"
 
 ztmp() {
     # echo "used <$1>"
