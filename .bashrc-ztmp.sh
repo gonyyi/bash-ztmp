@@ -18,6 +18,9 @@ ztver="1.1.1"
 # Create tmp directory if not exist.
 # This will load only when terminal sesssion starts
 [ ! -d "$ztdir" ] && $(mkdir -p "$ztdir")
+[ ! -d "$ztdir/$ztdir_archive" ] && $(mkdir -p "$ztdir/$ztdir_archive")
+[ ! -d "$ztdir/$ztdir_trash" ] && $(mkdir -p "$ztdir/$ztdir_trash")
+
 
 ztmp() {
     # echo "used <$1>"
@@ -72,6 +75,9 @@ ztmp() {
         ansiNone="\033[0m"
         foundAny=0
 
+
+        [ ! -d "$ztdir/*/" ] && echo "No temporary directory" && return
+
         lastCreatedDir=$(ls -1dtu $ztdir/*/ | grep $2)
         howMany=$(echo $lastCreatedDir | wc -l | xargs)
         if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
@@ -81,7 +87,7 @@ ztmp() {
             echo "${ansiWhite}zTmp: (total: $howMany)${ansiNone}\n$lastCreatedDir"
         fi
 
-        
+        [ ! -d "$ztdir/$ztdir_archive/*/" ] && return; 
         lastCreatedDir=$(ls -1dtu $ztdir/$ztdir_archive/*/ | grep $2)
         howMany=$(echo $lastCreatedDir | wc -l | xargs)
         if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
@@ -156,7 +162,7 @@ ztmp() {
     if [ $1 = "remove" ] || [ $1 = "-rm" ] || [ $1 = "archive" ] || [ $1 = "-a" ]; then 
         # get current dir; remove prefix (of ztmp dir)
         currDir=$(pwd)
-        currDirShort=${${currDir}#"$ztdir"}
+        currDirShort=${"$currDir"#"$ztdir"}
         
         if [ "$currDir" = "$currDirShort" ]; then
             echo "Error: this is not a zTmp directory."
