@@ -31,7 +31,7 @@ ztmp() {
         echo "Usage:"
         echo "     ztmp <Command> <Optional Param>\n"
         echo "Command:"
-        echo "     help|new|go|find|-f|last|list|-ls|today|-t|remove|-rm|archive"
+        echo "     help|new|go|cd|find|-f|last|list|-ls|today|-t|remove|-rm|archive"
 
         return 0;
     fi 
@@ -94,9 +94,9 @@ ztmp() {
         return 0;
     fi
 
-    if [ $1 = "go" ]; then 
+    if [ $1 = "go" ] || [ $1 = "cd" ]; then 
         if [ -z $2 ]; then 
-            echo "Usage: ztmp go <Name>"
+            echo "Usage: ztmp go <Name> (or ztmp cd <Name>)"
             return 1;
         fi 
 
