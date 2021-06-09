@@ -68,7 +68,7 @@ ztmp() {
         ansiNone="\033[0m"
         foundAny=0
 
-        lastCreatedDir=$(ls -1dtU $ztdir/*/ | grep $2)
+        lastCreatedDir=$(ls -1dtu $ztdir/*/ | grep $2)
         howMany=$(echo $lastCreatedDir | wc -l | xargs)
         if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
             howMany=0;
@@ -78,7 +78,7 @@ ztmp() {
         fi
 
         
-        lastCreatedDir=$(ls -1dtU $ztdir/$ztdir_archive/*/ | grep $2)
+        lastCreatedDir=$(ls -1dtu $ztdir/$ztdir_archive/*/ | grep $2)
         howMany=$(echo $lastCreatedDir | wc -l | xargs)
         if [ $howMany -eq 1 ] && [ -z $lastCreatedDir ]; then 
             howMany=0;
@@ -100,7 +100,7 @@ ztmp() {
             return 1;
         fi 
 
-        lastCreatedDir=$(ls -1dtU $ztdir/2*/ | grep $2)
+        lastCreatedDir=$(ls -1dtu $ztdir/2*/ | grep $2)
         # xargs will trim the space coming from `wc -l`
         howMany=$(echo $lastCreatedDir | wc -l | xargs)
 
@@ -125,7 +125,7 @@ ztmp() {
 
     if [ $1 = "last" ]; then 
         # 2*/, so archive or other folders won't be catched
-        lastCreatedDir=$(ls -1dtU $ztdir/2*/ | head -1)
+        lastCreatedDir=$(ls -1dtu $ztdir/2*/ | head -1)
         echo "Go to last: $lastCreatedDir"
         cd $lastCreatedDir
         return 0
@@ -133,9 +133,9 @@ ztmp() {
 
     if [ $1 = "list" ] || [ $1 = "-ls" ]; then 
         if [ "$#" -gt 1 ]; then 
-            lastCreatedDir=$(ls -1dtU $ztdir/2*/ | grep $2)
+            lastCreatedDir=$(ls -1dtu $ztdir/2*/ | grep $2)
         else
-            lastCreatedDir=$(ls -1dtU $ztdir/2*/)
+            lastCreatedDir=$(ls -1dtu $ztdir/2*/)
         fi 
         echo $lastCreatedDir
         return 0
