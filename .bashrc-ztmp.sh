@@ -219,6 +219,10 @@ ztmp() {
                 echo "Failed, retCode=$ret"
                 return 1 
             fi
-        fi 
+        fi
+        
     fi
+    
+    # This is when the command it not found
+    echo "Unknown command -- $1"
 }
